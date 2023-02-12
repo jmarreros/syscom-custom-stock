@@ -15,6 +15,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 namespace dcms\syscom\stock;
 
 use dcms\syscom\stock\includes\Plugin;
+use dcms\syscom\stock\includes\Metabox;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -22,37 +23,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 /**
  * Plugin class to handle settings constants and loading files
-**/
-final class Loader{
+ **/
+final class Loader {
 
 	// Define all the constants we need
-	public function define_constants(){
-		define ('SYSCOM_CUSTOM_STOCK_VERSION', '1.0');
-		define ('SYSCOM_CUSTOM_STOCK_PATH', plugin_dir_path( __FILE__ ));
-		define ('SYSCOM_CUSTOM_STOCK_URL', plugin_dir_url( __FILE__ ));
-		define ('SYSCOM_CUSTOM_STOCK_BASE_NAME', plugin_basename( __FILE__ ));
-		define ('DCMS_SUBMENU', 'tools.php');
+	public function define_constants(): void {
+		define( 'SYSCOM_CUSTOM_STOCK_VERSION', '1.0' );
+		define( 'SYSCOM_CUSTOM_STOCK_PATH', plugin_dir_path( __FILE__ ) );
+		define( 'SYSCOM_CUSTOM_STOCK_URL', plugin_dir_url( __FILE__ ) );
+		define( 'SYSCOM_CUSTOM_STOCK_BASE_NAME', plugin_basename( __FILE__ ) );
 	}
 
 	// Load all the files we need
-	public function load_includes(){
-		include_once ( SYSCOM_CUSTOM_STOCK_PATH . '/includes/plugin.php');
+	public function load_includes(): void {
+		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/plugin.php' );
+		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/metabox.php' );
 	}
 
 	// Load tex domain
-	public function load_domain(){
-		add_action('plugins_loaded', function(){
-			$path_languages = dirname(SYSCOM_CUSTOM_STOCK_BASE_NAME).'/languages/';
-			load_plugin_textdomain('syscom-custom-stock', false, $path_languages );
-		});
+	public function load_domain(): void {
+		add_action( 'plugins_loaded', function () {
+			$path_languages = dirname( SYSCOM_CUSTOM_STOCK_BASE_NAME ) . '/languages/';
+			load_plugin_textdomain( 'syscom-custom-stock', false, $path_languages );
+		} );
 	}
 
 	// Initialize all
-	public function init(){
+	public function init(): void {
 		$this->define_constants();
 		$this->load_includes();
 		$this->load_domain();
 		new Plugin();
+		new Metabox();
 	}
 
 }
