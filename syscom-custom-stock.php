@@ -16,6 +16,7 @@ namespace dcms\syscom\stock;
 
 use dcms\syscom\stock\includes\Plugin;
 use dcms\syscom\stock\includes\Metabox;
+use dcms\syscom\stock\includes\CustomStock;
 
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
@@ -32,12 +33,16 @@ final class Loader {
 		define( 'SYSCOM_CUSTOM_STOCK_PATH', plugin_dir_path( __FILE__ ) );
 		define( 'SYSCOM_CUSTOM_STOCK_URL', plugin_dir_url( __FILE__ ) );
 		define( 'SYSCOM_CUSTOM_STOCK_BASE_NAME', plugin_basename( __FILE__ ) );
+
+		define( 'SYSCOM_CUSTOM_STOCK_PRODUCT', 'syscom_custom_stock_product' );
+		define( 'SYSCOM_API_STOCK_PRODUCT', 'syscom_api_stock_product' );
 	}
 
 	// Load all the files we need
 	public function load_includes(): void {
 		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/plugin.php' );
 		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/metabox.php' );
+		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/custom-stock.php' );
 	}
 
 	// Load tex domain
@@ -55,6 +60,7 @@ final class Loader {
 		$this->load_domain();
 		new Plugin();
 		new Metabox();
+		new CustomStock();
 	}
 
 }
