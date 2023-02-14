@@ -14,7 +14,6 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.txt
 
 namespace dcms\syscom\stock;
 
-use dcms\syscom\stock\includes\Plugin;
 use dcms\syscom\stock\includes\Metabox;
 use dcms\syscom\stock\includes\CustomStock;
 
@@ -40,7 +39,6 @@ final class Loader {
 
 	// Load all the files we need
 	public function load_includes(): void {
-		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/plugin.php' );
 		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/metabox.php' );
 		include_once( SYSCOM_CUSTOM_STOCK_PATH . '/includes/custom-stock.php' );
 	}
@@ -58,7 +56,6 @@ final class Loader {
 		$this->define_constants();
 		$this->load_includes();
 		$this->load_domain();
-		new Plugin();
 		new Metabox();
 		new CustomStock();
 	}
