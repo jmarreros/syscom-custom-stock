@@ -55,24 +55,33 @@ class CustomStock {
 				break;
 		}
 	}
-	
-	// Update custom stock
+
+	// Update custom stock in orders
 	public function order_status_change_custom( $order_id, $old_status, $new_status, $order ) {
 		$items = $order->get_items();
+
 		foreach ( $items as $item ) {
 			$product_id = $item->get_product_id();
+			$quantity   = $item->get_quantity(); // quantity in item order
 
-			// TODO
-			if ( $new_status === 'completed' ){
+			$custom_stock = intval( get_post_meta( $product_id, SYSCOM_CUSTOM_STOCK_PRODUCT, true ) );
+			$api_stock    = intval( get_post_meta( $product_id, SYSCOM_API_STOCK_PRODUCT, true ) );
 
-			} else {
-
+			// reduce stock
+			if ( $new_status === 'completed' ) {
+				$new_stock = max( $custom_stock - $quantity, 0 );
+				update_post_meta( $product_id, SYSCOM_CUSTOM_STOCK_PRODUCT, $new_stock );
 			}
-			error_log(print_r($old_status,true));
-			error_log(print_r($new_status,true));
-			error_log(print_r('El producto en la orden',true));
-			error_log(print_r($product_id,true));
-		}
+			// Add stock, old_status
+			else if ( $old_status === 'completed' ) {
+				$product         = wc_get_product( $product_id );
+				$stock_inventory = $product->get_stock_quantity();
+
+				$new_stock       = max( $stock_inventory - $api_stock, 0 );
+				update_post_meta( $product_id, SYSCOM_CUSTOM_STOCK_PRODUCT, $new_stock );
+			}
+		} //end foreach
 	}
+
 
 }
