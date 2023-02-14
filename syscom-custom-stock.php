@@ -34,8 +34,8 @@ final class Loader {
 		define( 'SYSCOM_CUSTOM_STOCK_URL', plugin_dir_url( __FILE__ ) );
 		define( 'SYSCOM_CUSTOM_STOCK_BASE_NAME', plugin_basename( __FILE__ ) );
 
-		define( 'SYSCOM_CUSTOM_STOCK_PRODUCT', 'syscom_custom_stock_product' );
 		define( 'SYSCOM_API_STOCK_PRODUCT', 'syscom_api_stock_product' );
+		define( 'SYSCOM_CUSTOM_STOCK_PRODUCT', 'syscom_custom_stock_product' );
 	}
 
 	// Load all the files we need

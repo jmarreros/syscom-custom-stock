@@ -37,15 +37,18 @@ class Metabox {
 		<?php
 	}
 
-	public function save_metabox_stock_product( $post_id, $post ) {
+	public function save_metabox_stock_product( $product_id_woo, $post ) {
 		if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
 			return;
 		}
 
-		$custom_stock = $_POST['custom-stock'] ?? 0;
-		if ( is_numeric( $custom_stock ) ) {
-			update_post_meta( $post_id, SYSCOM_CUSTOM_STOCK_PRODUCT, $custom_stock );
-		}
+		$custom_stock = intval($_POST['custom-stock'] ?? 0);
+        update_post_meta( $product_id_woo, SYSCOM_CUSTOM_STOCK_PRODUCT, $custom_stock );
+
+        //Recalculate stock
+        $stock_api = intval( get_post_meta( $product_id_woo, SYSCOM_API_STOCK_PRODUCT, true ) );
+        wc_update_product_stock( $product_id_woo, $stock_api + $custom_stock );
+
 	}
 
 }
