@@ -2,6 +2,7 @@
 
 /**
  * Class to manage stock filter syscom_woocommerce plugin
+
  */
 
 namespace dcms\syscom\stock\includes;
@@ -18,6 +19,7 @@ class CustomStock {
 	}
 
 	// Callback filter syscom_product_stock
+	// Save stock api and custom stock in product metadata
 	public function build_custom_stock( $stock, $id_woo_product, $is_new ): int {
 		// Update api stock for new and existing products
 		update_post_meta( $id_woo_product, SYSCOM_API_STOCK_PRODUCT, $stock );
