@@ -66,10 +66,10 @@ class Metabox {
 
 		echo "<div class='stock-detail' style='margin-bottom:10px'>";
 		if ( ! empty( $custom_stock ) ) {
-			echo "<div class='custom-stock'><span style='display:inline-block; width:100px'>Cantidad $custom_stock </span>➜ Entrega en 1 día</div>";
+			echo "<div class='custom-stock'><span>$custom_stock Und inmediata</span></div>";
 		}
 		if ( ! empty( $api_stock ) ) {
-			echo "<div class='api-stock'><span style='display:inline-block; width:100px'>Cantidad $api_stock </span>➜ Entrega en 3 días</div>";
+			echo "<div class='api-stock'><span>$api_stock Und en 3 días</span></div>";
 		}
 		echo "</div>";
 	}
