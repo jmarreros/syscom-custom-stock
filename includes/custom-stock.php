@@ -2,7 +2,6 @@
 
 /**
  * Class to manage stock filter syscom_woocommerce plugin
-
  */
 
 namespace dcms\syscom\stock\includes;
@@ -30,9 +29,14 @@ class CustomStock {
 			$custom_stock = get_post_meta( $id_woo_product, SYSCOM_CUSTOM_STOCK_PRODUCT, true );
 
 			// Update product inventory
-			if ( $custom_stock ) {
+			if ( intval( $custom_stock ) > 0 ) {
+
 				return $stock + intval( $custom_stock );
+			} else {
+				update_post_meta( $id_woo_product, SYSCOM_CUSTOM_STOCK_PRODUCT, 0 );
 			}
+		} else {
+			update_post_meta( $id_woo_product, SYSCOM_CUSTOM_STOCK_PRODUCT, 0 );
 		}
 
 		return $stock;
@@ -73,13 +77,12 @@ class CustomStock {
 			if ( $new_status === 'completed' ) {
 				$new_stock = max( $custom_stock - $quantity, 0 );
 				update_post_meta( $product_id, SYSCOM_CUSTOM_STOCK_PRODUCT, $new_stock );
-			}
-			// Add stock, old_status
+			} // Add stock, old_status
 			else if ( $old_status === 'completed' ) {
 				$product         = wc_get_product( $product_id );
 				$stock_inventory = $product->get_stock_quantity();
 
-				$new_stock       = max( $stock_inventory - $api_stock, 0 );
+				$new_stock = max( $stock_inventory - $api_stock, 0 );
 				update_post_meta( $product_id, SYSCOM_CUSTOM_STOCK_PRODUCT, $new_stock );
 			}
 		} //end foreach

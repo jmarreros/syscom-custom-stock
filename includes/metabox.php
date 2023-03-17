@@ -48,6 +48,9 @@ class Metabox {
 			return;
 		}
 
+        global $updating_product;
+        if ( $updating_product === $product_id_woo ) return;
+
 		$custom_stock = intval( $_POST['custom-stock'] ?? 0 );
 		update_post_meta( $product_id_woo, SYSCOM_CUSTOM_STOCK_PRODUCT, $custom_stock );
 
