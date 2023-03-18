@@ -23,17 +23,13 @@ class Metabox {
 	}
 
 	public function build_metabox_html( $post ) {
-		$api_stock    = get_post_meta( $post->ID, SYSCOM_API_STOCK_PRODUCT, true );
-		$custom_stock = get_post_meta( $post->ID, SYSCOM_CUSTOM_STOCK_PRODUCT, true );
-
-		if ( empty( $api_stock ) ) {
-			$api_stock = intval( get_post_meta( $post->ID, '_stock', true ) );
-			update_post_meta( $post->ID, SYSCOM_API_STOCK_PRODUCT, $api_stock );
-		}
+		$api_stock    = intval(get_post_meta( $post->ID, SYSCOM_API_STOCK_PRODUCT, true ));
+		$custom_stock = intval(get_post_meta( $post->ID, SYSCOM_CUSTOM_STOCK_PRODUCT, true ));
+        
 		?>
         <div>
-            <label for="custom-stock">API stock</label>
-            <input id="custom-stock" name="custom-stock" type="text" value="<?= $api_stock ?>" disabled>
+            <label for="api-stock">API stock</label>
+            <input id="api-stock" name="api-stock" type="number" step="1" value="<?= $api_stock ?>" >
         </div>
         <div>
             <label for="custom-stock">Custom stock</label>
@@ -55,8 +51,11 @@ class Metabox {
 		update_post_meta( $product_id_woo, SYSCOM_CUSTOM_STOCK_PRODUCT, $custom_stock );
 
 		//Recalculate stock
-		$stock_api = intval( get_post_meta( $product_id_woo, SYSCOM_API_STOCK_PRODUCT, true ) );
-		wc_update_product_stock( $product_id_woo, $stock_api + $custom_stock, 'set', true );
+		$stock_api = intval( $_POST['api-stock'] ?? 0 );
+		update_post_meta( $product_id_woo, SYSCOM_API_STOCK_PRODUCT, $stock_api );
+
+
+	    wc_update_product_stock( $product_id_woo, $stock_api + $custom_stock, 'set', true );
 	}
 
 
